@@ -277,11 +277,11 @@ impl VideoInfoRaw {
     }
 
     pub fn set_modifier(&mut self, modifier: u64) {
-        self.0.modifier = modifier;
+        self.0.modifier = modifier as i64;
     }
 
     pub fn modifier(self) -> u64 {
-        self.0.modifier
+        self.0.modifier as u64
     }
 
     pub fn set_size(&mut self, size: Rectangle) {
