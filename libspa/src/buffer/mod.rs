@@ -73,7 +73,13 @@ impl Data {
         DataFlags::from_bits_retain(self.0.flags)
     }
 
-    // FIXME: Add bindings for the fd field, but how to detect when it is not set / invalid?
+    pub fn fd(&self) -> Option<i64> {
+        if self.0.fd < 0 {
+            None
+        } else {
+            Some(self.0.fd)
+        }
+    }
 
     pub fn data(&mut self) -> Option<&mut [u8]> {
         // FIXME: For safety, perhaps only return a non-mut slice when DataFlags::WRITABLE is not set?
