@@ -1,7 +1,11 @@
 // Copyright The pipewire-rs Contributors.
 // SPDX-License-Identifier: MIT
 
-use std::{convert::TryFrom, fmt::Debug};
+use std::{
+    convert::TryFrom,
+    fmt::Debug,
+    os::fd::{BorrowedFd, RawFd},
+};
 
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub struct DataType(spa_sys::spa_data_type);
@@ -73,11 +77,12 @@ impl Data {
         DataFlags::from_bits_retain(self.0.flags)
     }
 
-    pub fn fd(&self) -> Option<i64> {
+    pub fn fd(&self) -> Option<BorrowedFd> {
         if self.0.fd < 0 {
             None
         } else {
-            Some(self.0.fd)
+            // SAFETY: The fd is guaranteed to be valid as long as the Data is valid
+            Some(unsafe { BorrowedFd::borrow_raw(self.0.fd as RawFd) })
         }
     }
 
