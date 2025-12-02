@@ -1535,9 +1535,9 @@ macro_rules! __property__ {
         pipewire::spa::pod::property!(
             $key,
             pipewire::spa::pod::Value::Choice(pipewire::spa::pod::ChoiceValue::$type_(
-                pipewire::spa::utils::Choice::<pipewire::spa::utils::$type_>(
+                pipewire::spa::utils::Choice(
                     pipewire::spa::utils::ChoiceFlags::empty(),
-                    pipewire::spa::utils::ChoiceEnum::<pipewire::spa::utils::$type_>::Enum {
+                    pipewire::spa::utils::ChoiceEnum::Enum {
                         default: $default,
                         alternatives: [ $( $alternative, )+ ].to_vec()
                     }
@@ -1550,9 +1550,9 @@ macro_rules! __property__ {
         pipewire::spa::pod::property!(
             $key,
             pipewire::spa::pod::Value::Choice(pipewire::spa::pod::ChoiceValue::$type_(
-                pipewire::spa::utils::Choice::<pipewire::spa::utils::$type_>(
+                pipewire::spa::utils::Choice(
                     pipewire::spa::utils::ChoiceFlags::empty(),
-                    pipewire::spa::utils::ChoiceEnum::<pipewire::spa::utils::$type_>::Flags {
+                    pipewire::spa::utils::ChoiceEnum::Flags {
                         default: $default,
                         flags: [ $( $alternative, )+ ].to_vec()
                     }
@@ -1565,9 +1565,9 @@ macro_rules! __property__ {
         pipewire::spa::pod::property!(
             $key,
             pipewire::spa::pod::Value::Choice(pipewire::spa::pod::ChoiceValue::$type_(
-                pipewire::spa::utils::Choice::<pipewire::spa::utils::$type_>(
+                pipewire::spa::utils::Choice(
                     pipewire::spa::utils::ChoiceFlags::empty(),
-                    pipewire::spa::utils::ChoiceEnum::<pipewire::spa::utils::$type_>::Step {
+                    pipewire::spa::utils::ChoiceEnum::Step {
                         default: $default,
                         min: $min,
                         max: $max,
@@ -1582,9 +1582,9 @@ macro_rules! __property__ {
         pipewire::spa::pod::property!(
             $key,
             pipewire::spa::pod::Value::Choice(pipewire::spa::pod::ChoiceValue::$type_(
-                pipewire::spa::utils::Choice::<pipewire::spa::utils::$type_>(
+                pipewire::spa::utils::Choice(
                     pipewire::spa::utils::ChoiceFlags::empty(),
-                    pipewire::spa::utils::ChoiceEnum::<pipewire::spa::utils::$type_>::Range {
+                    pipewire::spa::utils::ChoiceEnum::Range {
                         default: $default,
                         min: $min,
                         max: $max,
