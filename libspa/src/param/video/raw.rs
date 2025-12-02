@@ -227,6 +227,225 @@ impl Debug for VideoInterlaceMode {
     }
 }
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub struct VideoColorRange(pub spa_sys::spa_video_color_range);
+
+#[allow(non_upper_case_globals)]
+impl VideoColorRange {
+    /// the color range is unknown
+    pub const Unknown: Self = Self(spa_sys::SPA_VIDEO_COLOR_RANGE_UNKNOWN);
+    /// the color range is full (0-255 for 8bit)
+    pub const Full: Self = Self(spa_sys::SPA_VIDEO_COLOR_RANGE_0_255);
+    /// the color range is limited (16-235 for 8bit)
+    pub const Limited: Self = Self(spa_sys::SPA_VIDEO_COLOR_RANGE_16_235);
+
+    /// Obtain a [`VideoColorRange`] from a raw `spa_video_color_range` variant.
+    pub fn from_raw(raw: spa_sys::spa_video_color_range) -> Self {
+        Self(raw)
+    }
+
+    /// Get the raw [`spa_sys::spa_video_color_range`] representing this `VideoColorRange`.
+    pub fn as_raw(&self) -> spa_sys::spa_video_color_range {
+        self.0
+    }
+}
+
+impl Debug for VideoColorRange {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            VideoColorRange::Unknown => f.write_str("VideoColorRange::Unknown"),
+            _ => {
+                let c_str = unsafe {
+                    let c_buf = spa_sys::spa_debug_type_find_short_name(
+                        spa_sys::spa_type_video_color_range,
+                        self.as_raw(),
+                    );
+                    if c_buf.is_null() {
+                        return f.write_str("Unsupported");
+                    }
+                    CStr::from_ptr(c_buf)
+                };
+                let name = format!("VideoColorRange::{}", c_str.to_string_lossy());
+                f.write_str(&name)
+            }
+        }
+    }
+}
+
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub struct VideoColorMatrix(pub spa_sys::spa_video_color_matrix);
+
+#[allow(non_upper_case_globals)]
+impl VideoColorMatrix {
+    /// unknown matrix
+    pub const Unknown: Self = Self(spa_sys::SPA_VIDEO_COLOR_MATRIX_UNKNOWN);
+    /// identity matrix
+    pub const RGB: Self = Self(spa_sys::SPA_VIDEO_COLOR_MATRIX_RGB);
+    /// FCC color matrix
+    pub const FCC: Self = Self(spa_sys::SPA_VIDEO_COLOR_MATRIX_FCC);
+    /// ITU BT.709 color matrix
+    pub const BT709: Self = Self(spa_sys::SPA_VIDEO_COLOR_MATRIX_BT709);
+    /// ITU BT.601 color matrix
+    pub const BT601: Self = Self(spa_sys::SPA_VIDEO_COLOR_MATRIX_BT601);
+    /// SMPTE 240M color matrix
+    pub const SMPTE240M: Self = Self(spa_sys::SPA_VIDEO_COLOR_MATRIX_SMPTE240M);
+    /// ITU-R BT.2020 color matrix. since 1.6.
+    pub const BT2020: Self = Self(spa_sys::SPA_VIDEO_COLOR_MATRIX_BT2020);
+
+    /// Obtain a [`VideoColorMatrix`] from a raw `spa_video_color_matrix` variant.
+    pub fn from_raw(raw: spa_sys::spa_video_color_matrix) -> Self {
+        Self(raw)
+    }
+    /// Get the raw [`spa_sys::spa_video_color_matrix`] representing this `VideoColorMatrix`.
+    pub fn as_raw(&self) -> spa_sys::spa_video_color_matrix {
+        self.0
+    }
+}
+
+impl Debug for VideoColorMatrix {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            VideoColorMatrix::Unknown => f.write_str("VideoColorMatrix::Unknown"),
+            _ => {
+                let c_str = unsafe {
+                    let c_buf = spa_sys::spa_debug_type_find_short_name(
+                        spa_sys::spa_type_video_color_matrix,
+                        self.as_raw(),
+                    );
+                    if c_buf.is_null() {
+                        return f.write_str("Unsupported");
+                    }
+                    CStr::from_ptr(c_buf)
+                };
+                let name = format!("VideoColorMatrix::{}", c_str.to_string_lossy());
+                f.write_str(&name)
+            }
+        }
+    }
+}
+
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub struct VideoTransferFunction(pub spa_sys::spa_video_transfer_function);
+
+#[allow(non_upper_case_globals)]
+impl VideoTransferFunction {
+    /// unknown transfer function
+    pub const Unknown: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_UNKNOWN);
+    /// linear RGB, gamma 1.0 curve
+    pub const Gamma10: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_GAMMA10);
+    /// Gamma 1.8 curve
+    pub const Gamma18: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_GAMMA18);
+    /// Gamma 2.0 curve
+    pub const Gamma20: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_GAMMA20);
+    /// Gamma 2.2 curve
+    pub const Gamma22: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_GAMMA22);
+    /// Gamma 2.2 curve with a linear segment in the lower range
+    pub const BT709: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_BT709);
+    /// Gamma 2.2 curve with a linear segment in the lower range
+    pub const SMPTE240M: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_SMPTE240M);
+    /// Gamma 2.4 curve with a linear segment in the lower range
+    pub const SRGB: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_SRGB);
+    /// Gamma 2.8 curve
+    pub const Gamma28: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_GAMMA28);
+    /// Logarithmic transfer characteristic 100:1 range
+    pub const Log100: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_LOG100);
+    /// Logarithmic transfer characteristic 316.22777:1 range
+    pub const Log316: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_LOG316);
+    /// Gamma 2.2 curve with a linear segment in the lower range. Used for BT.2020 with 12 bits per component. since 1.6.
+    pub const BT2020_12: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_BT2020_12);
+    /// Gamma 2.19921875. since 1.8
+    pub const AdobeRGB: Self = Self(spa_sys::SPA_VIDEO_TRANSFER_ADOBERGB);
+
+    /// Obtain a [`VideoTransferFunction`] from a raw `spa_video_transfer_function` variant.
+    pub fn from_raw(raw: spa_sys::spa_video_transfer_function) -> Self {
+        Self(raw)
+    }
+
+    /// Get the raw [`spa_sys::spa_video_transfer_function`] representing this `VideoTransferFunction`.
+    pub fn as_raw(&self) -> spa_sys::spa_video_transfer_function {
+        self.0
+    }
+}
+
+impl Debug for VideoTransferFunction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            VideoTransferFunction::Unknown => f.write_str("VideoTransferFunction::Unknown"),
+            _ => {
+                let c_str = unsafe {
+                    let c_buf = spa_sys::spa_debug_type_find_short_name(
+                        spa_sys::spa_type_video_transfer_function,
+                        self.as_raw(),
+                    );
+                    if c_buf.is_null() {
+                        return f.write_str("Unsupported");
+                    }
+                    CStr::from_ptr(c_buf)
+                };
+                let name = format!("VideoTransferFunction::{}", c_str.to_string_lossy());
+                f.write_str(&name)
+            }
+        }
+    }
+}
+
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub struct VideoColorPrimaries(pub spa_sys::spa_video_color_primaries);
+
+#[allow(non_upper_case_globals)]
+impl VideoColorPrimaries {
+    /// unknown color primaries
+    pub const Unknown: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_UNKNOWN);
+    /// BT709 primaries
+    pub const BT709: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_BT709);
+    /// BT470M primaries
+    pub const BT470M: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_BT470M);
+    /// BT470BG primaries
+    pub const BT470BG: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_BT470BG);
+    /// SMPTE170M primaries
+    pub const SMPTE170M: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_SMPTE170M);
+    /// SMPTE240M primaries
+    pub const SMPTE240M: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_SMPTE240M);
+    /// Generic film
+    pub const Film: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_FILM);
+    /// BT2020 primaries. since 1.6.
+    pub const BT2020: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_BT2020);
+    /// Adobe RGB primaries. since 1.8
+    pub const AdobeRGB: Self = Self(spa_sys::SPA_VIDEO_COLOR_PRIMARIES_ADOBERGB);
+
+    /// Obtain a [`VideoColorPrimaries`] from a raw `spa_video_color_primaries` variant.
+    pub fn from_raw(raw: spa_sys::spa_video_color_primaries) -> Self {
+        Self(raw)
+    }
+
+    /// Get the raw [`spa_sys::spa_video_color_primaries`] representing this `VideoColorPrimaries`.
+    pub fn as_raw(&self) -> spa_sys::spa_video_color_primaries {
+        self.0
+    }
+}
+
+impl Debug for VideoColorPrimaries {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            VideoColorPrimaries::Unknown => f.write_str("VideoColorPrimaries::Unknown"),
+            _ => {
+                let c_str = unsafe {
+                    let c_buf = spa_sys::spa_debug_type_find_short_name(
+                        spa_sys::spa_type_video_color_primaries,
+                        self.as_raw(),
+                    );
+                    if c_buf.is_null() {
+                        return f.write_str("Unsupported");
+                    }
+                    CStr::from_ptr(c_buf)
+                };
+                let name = format!("VideoColorPrimaries::{}", c_str.to_string_lossy());
+                f.write_str(&name)
+            }
+        }
+    }
+}
+
 /// Rust representation of [`spa_sys::spa_video_info_raw`].
 #[repr(transparent)]
 #[derive(PartialEq, Eq, Clone, Copy)]
@@ -356,36 +575,36 @@ impl VideoInfoRaw {
         self.0.chroma_site
     }
 
-    pub fn set_color_range(&mut self, color_range: u32) {
-        self.0.color_range = color_range;
+    pub fn set_color_range(&mut self, color_range: VideoColorRange) {
+        self.0.color_range = color_range.as_raw();
     }
 
-    pub fn color_range(self) -> u32 {
-        self.0.color_range
+    pub fn color_range(self) -> VideoColorRange {
+        VideoColorRange::from_raw(self.0.color_range)
     }
 
-    pub fn set_color_matrix(&mut self, color_matrix: u32) {
-        self.0.color_matrix = color_matrix;
+    pub fn set_color_matrix(&mut self, color_matrix: VideoColorMatrix) {
+        self.0.color_matrix = color_matrix.as_raw();
     }
 
-    pub fn color_matrix(self) -> u32 {
-        self.0.color_matrix
+    pub fn color_matrix(self) -> VideoColorMatrix {
+        VideoColorMatrix::from_raw(self.0.color_matrix)
     }
 
-    pub fn set_transfer_function(&mut self, transfer_function: u32) {
-        self.0.transfer_function = transfer_function;
+    pub fn set_transfer_function(&mut self, transfer_function: VideoTransferFunction) {
+        self.0.transfer_function = transfer_function.as_raw();
     }
 
-    pub fn transfer_function(self) -> u32 {
-        self.0.transfer_function
+    pub fn transfer_function(self) -> VideoTransferFunction {
+        VideoTransferFunction::from_raw(self.0.transfer_function)
     }
 
-    pub fn set_color_primaries(&mut self, color_primaries: u32) {
-        self.0.color_primaries = color_primaries;
+    pub fn set_color_primaries(&mut self, color_primaries: VideoColorPrimaries) {
+        self.0.color_primaries = color_primaries.as_raw();
     }
 
-    pub fn color_primaries(self) -> u32 {
-        self.0.color_primaries
+    pub fn color_primaries(self) -> VideoColorPrimaries {
+        VideoColorPrimaries::from_raw(self.0.color_primaries)
     }
 
     /// helper function to parse format properties type
