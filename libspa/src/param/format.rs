@@ -62,10 +62,10 @@ impl MediaSubtype {
     pub const Unknown: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_unknown);
     pub const Raw: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_raw);
     pub const Dsp: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_dsp);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// S/PDIF
     pub const Iec958: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_iec958);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     pub const Dsd: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_dsd);
 
     pub const Mp3: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_mp3);
@@ -80,13 +80,13 @@ impl MediaSubtype {
     pub const G729: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_g729);
     pub const Amr: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_amr);
     pub const Gsm: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_gsm);
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const Alac: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_alac);
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const Flac: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_flac);
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const Ape: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_ape);
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const Opus: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_opus);
 
     pub const H264: Self = Self(spa_sys::SPA_MEDIA_SUBTYPE_h264);
@@ -195,33 +195,33 @@ impl FormatProperties {
     /// channel positions (Id enum spa_audio_position)
     pub const AudioPosition: Self = Self(spa_sys::SPA_FORMAT_AUDIO_position);
 
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// codec used (IEC958) (Id enum spa_audio_iec958_codec)
     pub const AudioIec958Codec: Self = Self(spa_sys::SPA_FORMAT_AUDIO_iec958Codec);
 
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// bit order (Id enum spa_param_bitorder)
     pub const AudioBitorder: Self = Self(spa_sys::SPA_FORMAT_AUDIO_bitorder);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// Interleave bytes (Int)
     pub const AudioInterleave: Self = Self(spa_sys::SPA_FORMAT_AUDIO_interleave);
     /// bit rate (Int)
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const AudioBitrate: Self = Self(spa_sys::SPA_FORMAT_AUDIO_bitrate);
     /// audio data block alignment (Int)
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const AudioBlockAlign: Self = Self(spa_sys::SPA_FORMAT_AUDIO_blockAlign);
 
     /// AAC stream format, (Id enum spa_audio_aac_stream_format)
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const AudioAacStreamFormat: Self = Self(spa_sys::SPA_FORMAT_AUDIO_AAC_streamFormat);
 
     /// WMA profile (Id enum spa_audio_wma_profile)
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const AudioWmaProfile: Self = Self(spa_sys::SPA_FORMAT_AUDIO_WMA_profile);
 
     /// AMR band mode (Id enum spa_audio_amr_band_mode)
-    #[cfg(feature = "v0_3_65")]
+    #[cfg(libpipewire_0_3_65_or_higher)]
     pub const AudioAmrBandMode: Self = Self(spa_sys::SPA_FORMAT_AUDIO_AMR_bandMode);
 
     /// video format (Id enum spa_video_format)

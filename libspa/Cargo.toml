@@ -35,11 +35,3 @@ regex = "1.11.1"
 libspa = { name = "libspa-0.2", version = "0.2" }
 libpipewire = { name = "libpipewire-0.3", version = "0.3" }
 
-[features]
-v0_3_7 = []
-v0_3_32 = ["v0_3_7"]
-v0_3_33 = ["v0_3_32"]
-v0_3_40 = ["v0_3_33"]
-v0_3_65 = ["v0_3_40", "spa_sys/v0_3_65"]
-v0_3_68 = ["v0_3_65"]
-v0_3_75 = ["v0_3_68"]

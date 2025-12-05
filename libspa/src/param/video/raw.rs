@@ -6,7 +6,7 @@ use crate::utils::{
     Fraction, Rectangle,
 };
 
-#[cfg(feature = "v0_3_65")]
+#[cfg(libpipewire_0_3_65_or_higher)]
 use convert_case::{Case, Casing};
 
 use std::{ffi::CStr, fmt::Debug};
@@ -99,28 +99,28 @@ impl VideoFormat {
     pub const RGBA_F16: Self = Self(spa_sys::SPA_VIDEO_FORMAT_RGBA_F16);
     pub const RGBA_F32: Self = Self(spa_sys::SPA_VIDEO_FORMAT_RGBA_F32);
 
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// 32-bit x:R:G:B 2:10:10:10 little endian
     pub const xRGB_210LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_xRGB_210LE);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     ///32-bit x:B:G:R 2:10:10:10 little endian
     pub const xBGR_210LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_xBGR_210LE);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     ///32-bit R:G:B:x 10:10:10:2 little endian
     pub const RGBx_102LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_RGBx_102LE);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// 32-bit B:G:R:x 10:10:10:2 little endian
     pub const BGRx_102LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_BGRx_102LE);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// 32-bit A:R:G:B 2:10:10:10 little endian
     pub const ARGB_210LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_ARGB_210LE);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// 32-bit A:B:G:R 2:10:10:10 little endian
     pub const ABGR_210LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_ABGR_210LE);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// 32-bit R:G:B:A 10:10:10:2 little endian
     pub const RGBA_102LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_RGBA_102LE);
-    #[cfg(feature = "v0_3_32")]
+    #[cfg(libpipewire_0_3_32_or_higher)]
     /// 32-bit B:G:R:A 10:10:10:2 little endian
     pub const BGRA_102LE: Self = Self(spa_sys::SPA_VIDEO_FORMAT_BGRA_102LE);
 
@@ -170,9 +170,9 @@ bitflags::bitflags! {
         /// Each color has been scaled by the alpha value.
         const PREMULTIPLIED_ALPHA = spa_sys::SPA_VIDEO_FLAG_PREMULTIPLIED_ALPHA;
         /// use the format modifier
-        #[cfg(feature = "v0_3_65")]
+        #[cfg(libpipewire_0_3_65_or_higher)]
         const MODIFIER = spa_sys::SPA_VIDEO_FLAG_MODIFIER;
-        #[cfg(feature = "v0_3_75")]
+        #[cfg(libpipewire_0_3_75_or_higher)]
         /// format modifier was not fixated yet
         const MODIFIER_FIXATION_REQUIRED = spa_sys::SPA_VIDEO_FLAG_MODIFIER_FIXATION_REQUIRED;
     }
@@ -206,7 +206,7 @@ impl VideoInterlaceMode {
     }
 }
 
-#[cfg(feature = "v0_3_65")]
+#[cfg(libpipewire_0_3_65_or_higher)]
 impl Debug for VideoInterlaceMode {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let c_str = unsafe {
@@ -632,9 +632,9 @@ impl Default for VideoInfoRaw {
 
 impl Debug for VideoInfoRaw {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        #[cfg(feature = "v0_3_65")]
+        #[cfg(libpipewire_0_3_65_or_higher)]
         let interlace_mode = self.interlace_mode();
-        #[cfg(not(feature = "v0_3_65"))]
+        #[cfg(not(libpipewire_0_3_65_or_higher))]
         let interlace_mode = self.interlace_mode().as_raw();
 
         let mut debug_struct = f.debug_struct("VideoInfoRaw");
@@ -684,7 +684,7 @@ mod tests {
             "VideoFormat::xRGB_210LE",
             format!("{:?}", VideoFormat::xRGB_210LE)
         );
-        #[cfg(feature = "v0_3_65")]
+        #[cfg(libpipewire_0_3_65_or_higher)]
         assert_eq!(
             "VideoInterlaceMode::Progressive",
             format!("{:?}", VideoInterlaceMode::Progressive)

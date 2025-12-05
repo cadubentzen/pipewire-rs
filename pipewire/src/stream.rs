@@ -328,12 +328,12 @@ impl StreamRef {
         unsafe { pw_sys::pw_stream_get_node_id(self.as_raw_ptr()) }
     }
 
-    #[cfg(feature = "v0_3_34")]
+    #[cfg(libpipewire_0_3_34_or_higher)]
     pub fn is_driving(&self) -> bool {
         unsafe { pw_sys::pw_stream_is_driving(self.as_raw_ptr()) }
     }
 
-    #[cfg(feature = "v0_3_34")]
+    #[cfg(libpipewire_0_3_34_or_higher)]
     pub fn trigger_process(&self) -> Result<(), Error> {
         let r = unsafe { pw_sys::pw_stream_trigger_process(self.as_raw_ptr()) };
 
@@ -359,9 +359,9 @@ pub struct ListenerLocalCallbacks<D> {
     pub remove_buffer: Option<Box<dyn FnMut(&StreamRef, &mut D, *mut pw_sys::pw_buffer)>>,
     pub process: Option<Box<ProcessCB<D>>>,
     pub drained: Option<Box<dyn FnMut(&StreamRef, &mut D)>>,
-    #[cfg(feature = "v0_3_39")]
+    #[cfg(libpipewire_0_3_39_or_higher)]
     pub command: Option<Box<dyn FnMut(&StreamRef, &mut D, *const spa_sys::spa_command)>>,
-    #[cfg(feature = "v0_3_40")]
+    #[cfg(libpipewire_0_3_40_or_higher)]
     pub trigger_done: Option<Box<dyn FnMut(&StreamRef, &mut D)>>,
     pub user_data: D,
     stream: Option<ptr::NonNull<pw_sys::pw_stream>>,
@@ -385,9 +385,9 @@ impl<D> ListenerLocalCallbacks<D> {
             param_changed: Default::default(),
             remove_buffer: Default::default(),
             state_changed: Default::default(),
-            #[cfg(feature = "v0_3_39")]
+            #[cfg(libpipewire_0_3_39_or_higher)]
             command: Default::default(),
-            #[cfg(feature = "v0_3_40")]
+            #[cfg(libpipewire_0_3_40_or_higher)]
             trigger_done: Default::default(),
             user_data,
         }
@@ -505,7 +505,7 @@ impl<D> ListenerLocalCallbacks<D> {
             }
         }
 
-        #[cfg(feature = "v0_3_39")]
+        #[cfg(libpipewire_0_3_39_or_higher)]
         unsafe extern "C" fn on_command<D>(
             data: *mut ::std::os::raw::c_void,
             command: *const spa_sys::spa_command,
@@ -518,7 +518,7 @@ impl<D> ListenerLocalCallbacks<D> {
             }
         }
 
-        #[cfg(feature = "v0_3_40")]
+        #[cfg(libpipewire_0_3_40_or_higher)]
         unsafe extern "C" fn on_trigger_done<D>(data: *mut ::std::os::raw::c_void) {
             if let Some(state) = (data as *mut ListenerLocalCallbacks<D>).as_mut() {
                 if let Some(cb) = &mut state.trigger_done {
@@ -556,11 +556,11 @@ impl<D> ListenerLocalCallbacks<D> {
             if callbacks.drained.is_some() {
                 events.drained = Some(on_drained::<D>);
             }
-            #[cfg(feature = "v0_3_39")]
+            #[cfg(libpipewire_0_3_39_or_higher)]
             if callbacks.command.is_some() {
                 events.command = Some(on_command::<D>);
             }
-            #[cfg(feature = "v0_3_40")]
+            #[cfg(libpipewire_0_3_40_or_higher)]
             if callbacks.trigger_done.is_some() {
                 events.trigger_done = Some(on_trigger_done::<D>);
             }
@@ -712,7 +712,7 @@ bitflags! {
         const EXCLUSIVE = pw_sys::pw_stream_flags_PW_STREAM_FLAG_EXCLUSIVE;
         const DONT_RECONNECT = pw_sys::pw_stream_flags_PW_STREAM_FLAG_DONT_RECONNECT;
         const ALLOC_BUFFERS = pw_sys::pw_stream_flags_PW_STREAM_FLAG_ALLOC_BUFFERS;
-        #[cfg(feature = "v0_3_41")]
+        #[cfg(libpipewire_0_3_41_or_higher)]
         const TRIGGER = pw_sys::pw_stream_flags_PW_STREAM_FLAG_TRIGGER;
     }
 }

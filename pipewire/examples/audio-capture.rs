@@ -11,7 +11,7 @@ use pw::{properties::properties, spa};
 use spa::param::format::{MediaSubtype, MediaType};
 use spa::param::format_utils;
 use spa::pod::Pod;
-#[cfg(feature = "v0_3_44")]
+#[cfg(libpipewire_0_3_44_or_higher)]
 use spa::WritableDict;
 use std::convert::TryInto;
 use std::mem;
@@ -51,13 +51,13 @@ pub fn main() -> Result<(), pw::Error> {
      * you need to listen to is the process event where you need to produce
      * the data.
      */
-    #[cfg(not(feature = "v0_3_44"))]
+    #[cfg(not(libpipewire_0_3_44_or_higher))]
     let props = properties! {
         *pw::keys::MEDIA_TYPE => "Audio",
         *pw::keys::MEDIA_CATEGORY => "Capture",
         *pw::keys::MEDIA_ROLE => "Music",
     };
-    #[cfg(feature = "v0_3_44")]
+    #[cfg(libpipewire_0_3_44_or_higher)]
     let props = {
         let opt = Opt::parse();
 

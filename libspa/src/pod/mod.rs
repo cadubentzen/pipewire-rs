@@ -595,7 +595,7 @@ impl PodObject {
         // C implementation always returns 0
     }
 
-    #[cfg(feature = "v0_3_40")]
+    #[cfg(libpipewire_0_3_40_or_higher)]
     pub fn is_fixated(&self) -> bool {
         let res = unsafe { spa_sys::spa_pod_object_is_fixated(self.as_raw_ptr()) };
         res != 0
@@ -663,11 +663,11 @@ bitflags! {
     pub struct PodPropFlags: u32 {
         const READONLY = spa_sys::SPA_POD_PROP_FLAG_READONLY;
         const HARDWARE = spa_sys::SPA_POD_PROP_FLAG_HARDWARE;
-        #[cfg(feature = "v0_3_32")]
+        #[cfg(libpipewire_0_3_32_or_higher)]
         const HINT_DICT = spa_sys::SPA_POD_PROP_FLAG_HINT_DICT;
-        #[cfg(feature = "v0_3_32")]
+        #[cfg(libpipewire_0_3_32_or_higher)]
         const MANDATORY = spa_sys::SPA_POD_PROP_FLAG_MANDATORY;
-        #[cfg(feature = "v0_3_32")]
+        #[cfg(libpipewire_0_3_32_or_higher)]
         const DONT_FIXATE = spa_sys::SPA_POD_PROP_FLAG_DONT_FIXATE;
     }
 }
@@ -1464,14 +1464,14 @@ bitflags! {
         const READONLY = spa_sys::SPA_POD_PROP_FLAG_READONLY;
         /// Property is some sort of hardware parameter.
         const HARDWARE = spa_sys::SPA_POD_PROP_FLAG_HARDWARE;
-        #[cfg(feature = "v0_3_32")]
+        #[cfg(libpipewire_0_3_32_or_higher)]
         /// Property contains a dictionary struct.
         const HINT_DICT = spa_sys::SPA_POD_PROP_FLAG_HINT_DICT;
-        #[cfg(feature = "v0_3_32")]
+        #[cfg(libpipewire_0_3_32_or_higher)]
         /// Property is mandatory.
         const MANDATORY = spa_sys::SPA_POD_PROP_FLAG_MANDATORY;
+        #[cfg(libpipewire_0_3_33_or_higher)]
         /// Property choices need no fixation.
-        #[cfg(feature = "v0_3_33")]
         const DONT_FIXATE = spa_sys::SPA_POD_PROP_FLAG_DONT_FIXATE;
     }
 }

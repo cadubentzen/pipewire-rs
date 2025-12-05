@@ -10,9 +10,9 @@ bitflags! {
         const R = pw_sys::PW_PERM_R;
         const W = pw_sys::PW_PERM_W;
         const X = pw_sys::PW_PERM_X;
-        #[cfg(feature = "v0_3_32")]
+        #[cfg(libpipewire_0_3_32_or_higher)]
         const M = pw_sys::PW_PERM_M;
-        #[cfg(feature = "v0_3_77")]
+        #[cfg(libpipewire_0_3_77_or_higher)]
         const L = pw_sys::PW_PERM_L;
     }
 }

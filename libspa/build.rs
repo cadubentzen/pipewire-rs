@@ -53,15 +53,29 @@ fn main() {
     let libspa = libs.get_by_name("libspa").unwrap();
 
     let pipewire = libs.get_by_name("libpipewire").unwrap();
-    let header_dir = pipewire.include_paths.iter().find(|&x| x.to_string_lossy().contains("pipe")).unwrap();
+    let header_dir = pipewire
+        .include_paths
+        .iter()
+        .find(|&x| x.to_string_lossy().contains("pipe"))
+        .unwrap();
     let (pw_major, pw_minor, pw_micro) = get_pw_version(header_dir);
     let pw_check_version = |desired_major: u32, desired_minor: u32, desired_micro: u32| {
-        pw_major > desired_major || (pw_major == desired_major && pw_minor > desired_minor) || (pw_major == desired_major && pw_minor == desired_minor && pw_micro >= desired_micro)
+        pw_major > desired_major
+            || (pw_major == desired_major && pw_minor > desired_minor)
+            || (pw_major == desired_major && pw_minor == desired_minor && pw_micro >= desired_micro)
     };
-    println!("cargo::rustc-check-cfg=cfg(libpipewire_0_3_65_or_higher)");
 
-    if pw_check_version(0, 3, 65) {
-        println!("cargo::rustc-cfg=libpipewire_0_3_65_or_higher");
+    for micro_version in 0..=80 {
+        println!(
+            "cargo::rustc-check-cfg=cfg(libpipewire_0_3_{}_or_higher)",
+            micro_version
+        );
+        if pw_check_version(0, 3, micro_version) {
+            println!(
+                "cargo::rustc-cfg=libpipewire_0_3_{}_or_higher",
+                micro_version
+            );
+        }
     }
 
     cc::Build::new()
