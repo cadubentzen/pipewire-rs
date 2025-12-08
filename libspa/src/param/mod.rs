@@ -147,3 +147,53 @@ impl Debug for ParamMetaProperties {
         f.write_str(name)
     }
 }
+
+/// Properties for ParamBuffers objects (used to configure buffer parameters).
+///
+/// Use with [`ParamType::Buffers`] and [`crate::utils::SpaTypes::ObjectParamBuffers`].
+#[derive(PartialEq, Eq, Clone, Copy)]
+pub struct ParamBuffersProperties(pub spa_sys::spa_param_buffers);
+
+#[allow(non_upper_case_globals)]
+impl ParamBuffersProperties {
+    /// Number of buffers (Int)
+    pub const Buffers: Self = Self(spa_sys::SPA_PARAM_BUFFERS_buffers);
+    /// Number of data blocks per buffer (Int)
+    pub const Blocks: Self = Self(spa_sys::SPA_PARAM_BUFFERS_blocks);
+    /// Size of a data block memory (Int)
+    pub const Size: Self = Self(spa_sys::SPA_PARAM_BUFFERS_size);
+    /// Stride of data block memory (Int)
+    pub const Stride: Self = Self(spa_sys::SPA_PARAM_BUFFERS_stride);
+    /// Alignment of data block memory (Int)
+    pub const Align: Self = Self(spa_sys::SPA_PARAM_BUFFERS_align);
+    /// Possible memory types (flags choice Int, mask of enum spa_data_type)
+    pub const DataType: Self = Self(spa_sys::SPA_PARAM_BUFFERS_dataType);
+    /// Required metadata types (Int, mask of enum spa_meta_type)
+    pub const MetaType: Self = Self(spa_sys::SPA_PARAM_BUFFERS_metaType);
+
+    /// Obtain a [`ParamBuffersProperties`] from a raw `spa_param_buffers` variant.
+    pub fn from_raw(raw: spa_sys::spa_param_buffers) -> Self {
+        Self(raw)
+    }
+
+    /// Get the raw [`spa_sys::spa_param_buffers`] representing this `ParamBuffersProperties`.
+    pub fn as_raw(&self) -> spa_sys::spa_param_buffers {
+        self.0
+    }
+}
+
+impl Debug for ParamBuffersProperties {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let name = match *self {
+            Self::Buffers => "ParamBuffersProperties::Buffers",
+            Self::Blocks => "ParamBuffersProperties::Blocks",
+            Self::Size => "ParamBuffersProperties::Size",
+            Self::Stride => "ParamBuffersProperties::Stride",
+            Self::Align => "ParamBuffersProperties::Align",
+            Self::DataType => "ParamBuffersProperties::DataType",
+            Self::MetaType => "ParamBuffersProperties::MetaType",
+            _ => "ParamBuffersProperties::Unknown",
+        };
+        f.write_str(name)
+    }
+}
