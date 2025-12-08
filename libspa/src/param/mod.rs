@@ -112,3 +112,38 @@ impl Debug for ParamInfo {
             .finish()
     }
 }
+
+/// Properties for ParamMeta objects (used to request buffer metadata).
+///
+/// Use with [`ParamType::Meta`] and [`crate::utils::SpaTypes::ObjectParamMeta`].
+#[derive(PartialEq, Eq, Clone, Copy)]
+pub struct ParamMetaProperties(pub spa_sys::spa_param_meta);
+
+#[allow(non_upper_case_globals)]
+impl ParamMetaProperties {
+    /// Type of metadata (Id, one of [`crate::buffer::MetaType`])
+    pub const Type: Self = Self(spa_sys::SPA_PARAM_META_type);
+    /// Size of metadata (Int)
+    pub const Size: Self = Self(spa_sys::SPA_PARAM_META_size);
+
+    /// Obtain a [`ParamMetaProperties`] from a raw `spa_param_meta` variant.
+    pub fn from_raw(raw: spa_sys::spa_param_meta) -> Self {
+        Self(raw)
+    }
+
+    /// Get the raw [`spa_sys::spa_param_meta`] representing this `ParamMetaProperties`.
+    pub fn as_raw(&self) -> spa_sys::spa_param_meta {
+        self.0
+    }
+}
+
+impl Debug for ParamMetaProperties {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let name = match *self {
+            Self::Type => "ParamMetaProperties::Type",
+            Self::Size => "ParamMetaProperties::Size",
+            _ => "ParamMetaProperties::Unknown",
+        };
+        f.write_str(name)
+    }
+}
