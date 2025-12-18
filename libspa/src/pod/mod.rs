@@ -1467,12 +1467,21 @@ bitflags! {
         #[cfg(libpipewire_0_3_32_or_higher)]
         /// Property contains a dictionary struct.
         const HINT_DICT = spa_sys::SPA_POD_PROP_FLAG_HINT_DICT;
-        #[cfg(libpipewire_0_3_32_or_higher)]
+        #[cfg(not(libpipewire_0_3_32_or_higher))]
+        /// Property contains a dictionary struct.
+        const HINT_DICT = 1u32 << 2;
+        #[cfg(libpipewire_0_3_29_or_higher)]
         /// Property is mandatory.
         const MANDATORY = spa_sys::SPA_POD_PROP_FLAG_MANDATORY;
+        #[cfg(not(libpipewire_0_3_29_or_higher))]
+        /// Property is mandatory.
+        const MANDATORY = 1u32 << 3;
         #[cfg(libpipewire_0_3_33_or_higher)]
         /// Property choices need no fixation.
         const DONT_FIXATE = spa_sys::SPA_POD_PROP_FLAG_DONT_FIXATE;
+        #[cfg(not(libpipewire_0_3_33_or_higher))]
+        /// Property choices need no fixation.
+        const DONT_FIXATE = 1u32 << 4;
     }
 }
 
