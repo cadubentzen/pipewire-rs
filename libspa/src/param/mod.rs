@@ -168,6 +168,7 @@ impl ParamBuffersProperties {
     pub const Align: Self = Self(spa_sys::SPA_PARAM_BUFFERS_align);
     /// Possible memory types (flags choice Int, mask of enum spa_data_type)
     pub const DataType: Self = Self(spa_sys::SPA_PARAM_BUFFERS_dataType);
+    #[cfg(libpipewire_1_0_8_or_higher)]
     /// Required metadata types (Int, mask of enum spa_meta_type)
     pub const MetaType: Self = Self(spa_sys::SPA_PARAM_BUFFERS_metaType);
 
@@ -191,6 +192,7 @@ impl Debug for ParamBuffersProperties {
             Self::Stride => "ParamBuffersProperties::Stride",
             Self::Align => "ParamBuffersProperties::Align",
             Self::DataType => "ParamBuffersProperties::DataType",
+            #[cfg(libpipewire_1_0_8_or_higher)]
             Self::MetaType => "ParamBuffersProperties::MetaType",
             _ => "ParamBuffersProperties::Unknown",
         };

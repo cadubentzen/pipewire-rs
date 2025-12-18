@@ -24,10 +24,13 @@ impl MetaType {
     pub const Cursor: Self = Self(spa_sys::SPA_META_Cursor);
     /// Contains control metadata.
     pub const Control: Self = Self(spa_sys::SPA_META_Control);
+    #[cfg(libpipewire_0_3_21_or_higher)]
     /// Contains busy counter.
     pub const Busy: Self = Self(spa_sys::SPA_META_Busy);
+    #[cfg(libpipewire_0_3_62_or_higher)]
     /// Contains video transform information.
     pub const VideoTransform: Self = Self(spa_sys::SPA_META_VideoTransform);
+    #[cfg(libpipewire_1_0_8_or_higher)]
     /// Contains sync timeline information.
     pub const SyncTimeline: Self = Self(spa_sys::SPA_META_SyncTimeline);
 
@@ -47,10 +50,13 @@ impl MetaType {
         match *self {
             Self::Header => Some(std::mem::size_of::<spa_sys::spa_meta_header>() as i32),
             Self::VideoCrop => Some(std::mem::size_of::<spa_sys::spa_meta_region>() as i32),
+            #[cfg(libpipewire_0_3_62_or_higher)]
             Self::VideoTransform => {
                 Some(std::mem::size_of::<spa_sys::spa_meta_videotransform>() as i32)
             }
+            #[cfg(libpipewire_0_3_21_or_higher)]
             Self::Busy => Some(std::mem::size_of::<spa_sys::spa_meta_busy>() as i32),
+            #[cfg(libpipewire_1_0_8_or_higher)]
             Self::SyncTimeline => {
                 Some(std::mem::size_of::<spa_sys::spa_meta_sync_timeline>() as i32)
             }
@@ -72,8 +78,11 @@ impl Debug for MetaType {
                 Self::Bitmap => "Bitmap",
                 Self::Cursor => "Cursor",
                 Self::Control => "Control",
+                #[cfg(libpipewire_0_3_21_or_higher)]
                 Self::Busy => "Busy",
+                #[cfg(libpipewire_0_3_62_or_higher)]
                 Self::VideoTransform => "VideoTransform",
+                #[cfg(libpipewire_1_0_8_or_higher)]
                 Self::SyncTimeline => "SyncTimeline",
                 _ => "Unknown",
             }

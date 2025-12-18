@@ -124,6 +124,19 @@ fn main() {
         }
     }
 
+    for micro_version in 0..=20 {
+        println!(
+            "cargo::rustc-check-cfg=cfg(libpipewire_1_0_{}_or_higher)",
+            micro_version
+        );
+        if pw_check_version(1, 0, micro_version) {
+            println!(
+                "cargo::rustc-cfg=libpipewire_1_0_{}_or_higher",
+                micro_version
+            );
+        }
+    }
+
     let mut cc = cc::Build::new();
     cc.files(cc_files);
     cc.include(env!("CARGO_MANIFEST_DIR"));
