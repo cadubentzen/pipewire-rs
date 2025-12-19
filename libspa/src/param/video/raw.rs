@@ -227,6 +227,7 @@ impl Debug for VideoInterlaceMode {
     }
 }
 
+#[cfg_attr(not(libpipewire_1_5_81_or_higher), derive(Debug))]
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub struct VideoColorRange(pub spa_sys::spa_video_color_range);
 
@@ -250,6 +251,7 @@ impl VideoColorRange {
     }
 }
 
+#[cfg(libpipewire_1_5_81_or_higher)]
 impl Debug for VideoColorRange {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match *self {
@@ -272,6 +274,7 @@ impl Debug for VideoColorRange {
     }
 }
 
+#[cfg_attr(not(libpipewire_1_5_81_or_higher), derive(Debug))]
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub struct VideoColorMatrix(pub spa_sys::spa_video_color_matrix);
 
@@ -302,6 +305,7 @@ impl VideoColorMatrix {
     }
 }
 
+#[cfg(libpipewire_1_5_81_or_higher)]
 impl Debug for VideoColorMatrix {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match *self {
@@ -324,6 +328,7 @@ impl Debug for VideoColorMatrix {
     }
 }
 
+#[cfg_attr(not(libpipewire_1_5_81_or_higher), derive(Debug))]
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub struct VideoTransferFunction(pub spa_sys::spa_video_transfer_function);
 
@@ -367,6 +372,7 @@ impl VideoTransferFunction {
     }
 }
 
+#[cfg(libpipewire_1_5_81_or_higher)]
 impl Debug for VideoTransferFunction {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match *self {
@@ -389,6 +395,7 @@ impl Debug for VideoTransferFunction {
     }
 }
 
+#[cfg_attr(not(libpipewire_1_5_81_or_higher), derive(Debug))]
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub struct VideoColorPrimaries(pub spa_sys::spa_video_color_primaries);
 
@@ -424,6 +431,7 @@ impl VideoColorPrimaries {
     }
 }
 
+#[cfg(libpipewire_1_5_81_or_higher)]
 impl Debug for VideoColorPrimaries {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match *self {
