@@ -1,5 +1,8 @@
 use super::stream::StreamRef;
 
+#[cfg(libpipewire_1_0_8_or_higher)]
+use spa::buffer::{Data, Meta, MetaRegion, MetaSyncTimeline, MetaType};
+#[cfg(not(libpipewire_1_0_8_or_higher))]
 use spa::buffer::{Data, Meta, MetaRegion, MetaType};
 use std::convert::TryFrom;
 use std::ptr::NonNull;
@@ -59,6 +62,12 @@ impl Buffer<'_> {
     /// Returns the video crop region if present.
     pub fn video_crop(&mut self) -> Option<&MetaRegion> {
         self.find_meta_mut(MetaType::VideoCrop)?.video_crop()
+    }
+
+    /// Returns the sync timeline metadata if present.
+    #[cfg(libpipewire_1_0_8_or_higher)]
+    pub fn sync_timeline(&mut self) -> Option<&MetaSyncTimeline> {
+        self.find_meta_mut(MetaType::SyncTimeline)?.sync_timeline()
     }
 
     #[cfg(libpipewire_0_3_49_or_higher)]

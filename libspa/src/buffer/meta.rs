@@ -146,6 +146,69 @@ impl Debug for Meta {
     }
 }
 
+#[cfg(libpipewire_1_0_8_or_higher)]
+mod sync_timeline_impl {
+    use super::*;
+
+    /// Sync timeline metadata for explicit synchronization.
+    ///
+    /// Used with DRM syncobj to synchronize buffer access between compositor and consumer.
+    #[derive(Clone)]
+    #[repr(transparent)]
+    pub struct MetaSyncTimeline(pub(super) spa_sys::spa_meta_sync_timeline);
+
+    impl MetaSyncTimeline {
+        pub fn as_raw(&self) -> &spa_sys::spa_meta_sync_timeline {
+            &self.0
+        }
+
+        /// Returns the acquire point on the timeline.
+        /// The consumer must wait for this point before reading the buffer.
+        pub fn acquire_point(&self) -> u64 {
+            self.0.acquire_point
+        }
+
+        /// Returns the release point on the timeline.
+        /// The consumer must signal this point after it's done reading the buffer.
+        pub fn release_point(&self) -> u64 {
+            self.0.release_point
+        }
+
+        /// Returns the flags for this sync timeline.
+        pub fn flags(&self) -> u32 {
+            self.0.flags
+        }
+    }
+
+    impl Debug for MetaSyncTimeline {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            f.debug_struct("MetaSyncTimeline")
+                .field("acquire_point", &self.0.acquire_point)
+                .field("release_point", &self.0.release_point)
+                .field("flags", &self.0.flags)
+                .finish()
+        }
+    }
+
+    impl Meta {
+        /// Returns the sync timeline if this metadata is of type [`MetaType::SyncTimeline`].
+        ///
+        /// Returns `None` if the metadata type doesn't match or if the size is insufficient.
+        pub fn sync_timeline(&self) -> Option<&MetaSyncTimeline> {
+            if self.type_() == MetaType::SyncTimeline
+                && self.size() >= std::mem::size_of::<spa_sys::spa_meta_sync_timeline>() as u32
+            {
+                unsafe { Some(&*(self.0.data as *const MetaSyncTimeline)) }
+            } else {
+                None
+            }
+        }
+    }
+}
+
+#[cfg(libpipewire_1_0_8_or_higher)]
+pub use sync_timeline_impl::MetaSyncTimeline;
+
 /// A region metadata, used for video crop and video damage.
 #[derive(Clone)]
 #[repr(transparent)]
