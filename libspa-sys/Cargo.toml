@@ -33,3 +33,4 @@ doctest = false # https://github.com/rust-lang/rust-bindgen/issues/1313
 v0_3_7 = []
 v0_3_32 = ["v0_3_7"]
 v0_3_65 = ["v0_3_32"]
+v1_5_81 = ["v0_3_65"]
