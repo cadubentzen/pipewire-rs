@@ -24,6 +24,8 @@ impl MetaType {
     pub const VideoTransform: Self = Self(spa_sys::SPA_META_VideoTransform);
     #[cfg(feature = "v1_0_8")]
     pub const SyncTimeline: Self = Self(spa_sys::SPA_META_SyncTimeline);
+    #[cfg(not(feature = "v1_0_8"))]
+    pub const SyncTimeline: Self = Self(9);
 
     pub fn from_raw(raw: spa_sys::spa_meta_type) -> Self {
         Self(raw)
@@ -46,9 +48,8 @@ impl MetaType {
             }
             #[cfg(feature = "v0_3_21")]
             Self::Busy => Some(std::mem::size_of::<spa_sys::spa_meta_busy>() as i32),
-            #[cfg(feature = "v1_0_8")]
             Self::SyncTimeline => {
-                Some(std::mem::size_of::<spa_sys::spa_meta_sync_timeline>() as i32)
+                Some(std::mem::size_of::<MetaSyncTimeline>() as i32)
             }
             _ => None,
         }
@@ -71,7 +72,6 @@ impl Debug for MetaType {
                 Self::Busy => "Busy",
                 #[cfg(feature = "v0_3_62")]
                 Self::VideoTransform => "VideoTransform",
-                #[cfg(feature = "v1_0_8")]
                 Self::SyncTimeline => "SyncTimeline",
                 _ => "Unknown",
             }
@@ -110,6 +110,16 @@ impl Meta {
             None
         }
     }
+
+    pub fn sync_timeline(&self) -> Option<&MetaSyncTimeline> {
+        if self.type_() == MetaType::SyncTimeline
+            && self.size() >= std::mem::size_of::<MetaSyncTimeline>() as u32
+        {
+            unsafe { Some(&*(self.0.data as *const MetaSyncTimeline)) }
+        } else {
+            None
+        }
+    }
 }
 
 impl Debug for Meta {
@@ -121,58 +131,74 @@ impl Debug for Meta {
     }
 }
 
+/// Sync timeline metadata for explicit synchronization.
 #[cfg(feature = "v1_0_8")]
-mod sync_timeline_impl {
-    use super::*;
+#[derive(Clone)]
+#[repr(transparent)]
+pub struct MetaSyncTimeline(spa_sys::spa_meta_sync_timeline);
 
-    /// Sync timeline metadata for explicit synchronization.
-    #[derive(Clone)]
-    #[repr(transparent)]
-    pub struct MetaSyncTimeline(pub(super) spa_sys::spa_meta_sync_timeline);
+#[cfg(not(feature = "v1_0_8"))]
+#[derive(Clone)]
+#[repr(C)]
+pub struct MetaSyncTimeline {
+    pub flags: u32,
+    pub acquire_point: u64,
+    pub release_point: u64,
+}
 
-    impl MetaSyncTimeline {
-        pub fn as_raw(&self) -> &spa_sys::spa_meta_sync_timeline {
-            &self.0
-        }
-
-        pub fn acquire_point(&self) -> u64 {
-            self.0.acquire_point
-        }
-
-        pub fn release_point(&self) -> u64 {
-            self.0.release_point
-        }
-
-        pub fn flags(&self) -> u32 {
-            self.0.flags
-        }
+impl MetaSyncTimeline {
+    pub fn acquire_point(&self) -> u64 {
+        self.acquire_point_inner()
     }
 
-    impl Debug for MetaSyncTimeline {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            f.debug_struct("MetaSyncTimeline")
-                .field("acquire_point", &self.0.acquire_point)
-                .field("release_point", &self.0.release_point)
-                .field("flags", &self.0.flags)
-                .finish()
-        }
+    pub fn release_point(&self) -> u64 {
+        self.release_point_inner()
     }
 
-    impl Meta {
-        pub fn sync_timeline(&self) -> Option<&MetaSyncTimeline> {
-            if self.type_() == MetaType::SyncTimeline
-                && self.size() >= std::mem::size_of::<spa_sys::spa_meta_sync_timeline>() as u32
-            {
-                unsafe { Some(&*(self.0.data as *const MetaSyncTimeline)) }
-            } else {
-                None
-            }
-        }
+    pub fn flags(&self) -> u32 {
+        self.flags_inner()
+    }
+
+    #[cfg(feature = "v1_0_8")]
+    fn acquire_point_inner(&self) -> u64 {
+        self.0.acquire_point
+    }
+
+    #[cfg(not(feature = "v1_0_8"))]
+    fn acquire_point_inner(&self) -> u64 {
+        self.acquire_point
+    }
+
+    #[cfg(feature = "v1_0_8")]
+    fn release_point_inner(&self) -> u64 {
+        self.0.release_point
+    }
+
+    #[cfg(not(feature = "v1_0_8"))]
+    fn release_point_inner(&self) -> u64 {
+        self.release_point
+    }
+
+    #[cfg(feature = "v1_0_8")]
+    fn flags_inner(&self) -> u32 {
+        self.0.flags
+    }
+
+    #[cfg(not(feature = "v1_0_8"))]
+    fn flags_inner(&self) -> u32 {
+        self.flags
     }
 }
 
-#[cfg(feature = "v1_0_8")]
-pub use sync_timeline_impl::MetaSyncTimeline;
+impl Debug for MetaSyncTimeline {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("MetaSyncTimeline")
+            .field("acquire_point", &self.acquire_point())
+            .field("release_point", &self.release_point())
+            .field("flags", &self.flags())
+            .finish()
+    }
+}
 
 /// A region metadata, used for video crop and video damage.
 #[derive(Clone)]

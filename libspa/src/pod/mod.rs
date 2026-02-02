@@ -665,10 +665,16 @@ bitflags! {
         const HARDWARE = spa_sys::SPA_POD_PROP_FLAG_HARDWARE;
         #[cfg(feature = "v0_3_32")]
         const HINT_DICT = spa_sys::SPA_POD_PROP_FLAG_HINT_DICT;
+        #[cfg(not(feature = "v0_3_32"))]
+        const HINT_DICT = 1u32 << 2;
         #[cfg(feature = "v0_3_29")]
         const MANDATORY = spa_sys::SPA_POD_PROP_FLAG_MANDATORY;
+        #[cfg(not(feature = "v0_3_29"))]
+        const MANDATORY = 1u32 << 3;
         #[cfg(feature = "v0_3_33")]
         const DONT_FIXATE = spa_sys::SPA_POD_PROP_FLAG_DONT_FIXATE;
+        #[cfg(not(feature = "v0_3_33"))]
+        const DONT_FIXATE = 1u32 << 4;
     }
 }
 
@@ -1467,12 +1473,21 @@ bitflags! {
         #[cfg(feature = "v0_3_32")]
         /// Property contains a dictionary struct.
         const HINT_DICT = spa_sys::SPA_POD_PROP_FLAG_HINT_DICT;
+        #[cfg(not(feature = "v0_3_32"))]
+        /// Property contains a dictionary struct.
+        const HINT_DICT = 1u32 << 2;
         #[cfg(feature = "v0_3_29")]
         /// Property is mandatory.
         const MANDATORY = spa_sys::SPA_POD_PROP_FLAG_MANDATORY;
-        /// Property choices need no fixation.
+        #[cfg(not(feature = "v0_3_29"))]
+        /// Property is mandatory.
+        const MANDATORY = 1u32 << 3;
         #[cfg(feature = "v0_3_33")]
+        /// Property choices need no fixation.
         const DONT_FIXATE = spa_sys::SPA_POD_PROP_FLAG_DONT_FIXATE;
+        #[cfg(not(feature = "v0_3_33"))]
+        /// Property choices need no fixation.
+        const DONT_FIXATE = 1u32 << 4;
     }
 }
 

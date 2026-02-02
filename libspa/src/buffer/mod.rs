@@ -23,6 +23,8 @@ impl DataType {
     #[cfg(feature = "v1_0_8")]
     /// A syncobj, usually requires a spa_meta_sync_timeline metadata with timeline points
     pub const SyncObj: Self = Self(spa_sys::SPA_DATA_SyncObj);
+    #[cfg(not(feature = "v1_0_8"))]
+    pub const SyncObj: Self = Self(5);
 
     pub fn from_raw(raw: spa_sys::spa_data_type) -> Self {
         Self(raw)
@@ -43,7 +45,6 @@ impl std::fmt::Debug for DataType {
                 Self::MemFd => "MemFd",
                 Self::DmaBuf => "DmaBuf",
                 Self::MemId => "MemId",
-                #[cfg(feature = "v1_0_8")]
                 Self::SyncObj => "SyncObj",
                 _ => "Unknown",
             }

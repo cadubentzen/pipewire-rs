@@ -1,9 +1,6 @@
 use super::stream::Stream;
 
-#[cfg(feature = "v1_0_8")]
 use spa::buffer::{Data, Meta, MetaRegion, MetaSyncTimeline, MetaType};
-#[cfg(not(feature = "v1_0_8"))]
-use spa::buffer::{Data, Meta, MetaRegion, MetaType};
 use std::convert::TryFrom;
 use std::ptr::NonNull;
 
@@ -61,7 +58,6 @@ impl Buffer<'_> {
         self.find_meta_mut(MetaType::VideoCrop)?.video_crop()
     }
 
-    #[cfg(feature = "v1_0_8")]
     pub fn sync_timeline(&mut self) -> Option<&MetaSyncTimeline> {
         self.find_meta_mut(MetaType::SyncTimeline)?.sync_timeline()
     }

@@ -156,6 +156,8 @@ impl ParamBuffersProperties {
     pub const DataType: Self = Self(spa_sys::SPA_PARAM_BUFFERS_dataType);
     #[cfg(feature = "v1_0_8")]
     pub const MetaType: Self = Self(spa_sys::SPA_PARAM_BUFFERS_metaType);
+    #[cfg(not(feature = "v1_0_8"))]
+    pub const MetaType: Self = Self(7);
 
     pub fn from_raw(raw: spa_sys::spa_param_buffers) -> Self {
         Self(raw)
@@ -175,7 +177,6 @@ impl Debug for ParamBuffersProperties {
             Self::Stride => "ParamBuffersProperties::Stride",
             Self::Align => "ParamBuffersProperties::Align",
             Self::DataType => "ParamBuffersProperties::DataType",
-            #[cfg(feature = "v1_0_8")]
             Self::MetaType => "ParamBuffersProperties::MetaType",
             _ => "ParamBuffersProperties::Unknown",
         };
