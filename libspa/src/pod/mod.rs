@@ -1500,12 +1500,16 @@ bitflags! {
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __property__ {
-    ($key:expr, $value:expr) => {
+    ($key:expr, $value:expr, flags: $flags:expr) => {
         pipewire::spa::pod::Property {
             key: $key.as_raw(),
-            flags: pipewire::spa::pod::PropertyFlags::empty(),
+            flags: $flags,
             value: $value,
         }
+    };
+
+    ($key:expr, $value:expr) => {
+        pipewire::spa::pod::property!($key, $value, flags: pipewire::spa::pod::PropertyFlags::empty())
     };
 
     ($key:expr, Id, $value:expr) => {
